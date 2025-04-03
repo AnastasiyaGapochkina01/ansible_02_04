@@ -1,0 +1,8 @@
+server {
+  server_name {{ item.value.server_name }};
+  listen {{ item.value.port }};
+
+  location / {
+    return 403;
+  }
+}
