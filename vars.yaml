@@ -1,0 +1,15 @@
+packages:
+  - strace
+  - netcat-traditional
+  - bash-completion
+  - nginx
+
+k8s_path: /etc/sysctl.d/99-kubernetes-cri.conf
+
+nginx_conf:
+  app:
+    server_name: app.local
+    port: 81
+  metrics:
+    server_name: metrics.app.local
+    port: 82
