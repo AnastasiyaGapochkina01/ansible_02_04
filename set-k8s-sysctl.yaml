@@ -1,0 +1,48 @@
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars.yaml
+  tasks:
+    - name: create empty file
+      copy:
+        content: ""
+        dest: "{{ k8s_path }}"
+
+    - name: add sysctl params
+      lineinfile:
+        path: "{{ k8s_path }}"
+        line: "{{ item }}"
+      with_items:
+        - 'net.bridge.bridge-nf-call-iptables = 1'
+        - 'net.ipv4.ip_forward = 1'
+        - 'net.bridge.bridge-nf-call-ip6tables = 1'
+
+    - name: Install packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+
+    - name: Generate vhosts
+      template:
+        src: vhost.j2
+        dest: "/etc/nginx/sites-available/{{ item.key }}"
+      loop: "{{ nginx_conf|dict2items }}"
+
+    - name: check disk usage
+      shell: df -h / | tail -n1
+      register: disk_info
+
+    - name: display disk info
+      debug:
+        msg: "{{ disk_info.stdout }}"
+
+    - name: check is nginx installed
+      command: which nginx
+      register: nginx_installed
+
+    - name: notify if nginx is NOT installed
+      debug:
+        msg: "nginx is not installed"
+      when: nginx_installed.rc != 0
