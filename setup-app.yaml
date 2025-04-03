@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Prepare host
+      include_tasks: preparation.yaml
+
+    - name: Copy file app
+      copy:
+        src: add-slave.py
+        dest: /opt/add-slave.py
+        mode: 0755
