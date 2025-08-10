@@ -1,7 +1,8 @@
+def git_url = "git@github.com:AnastasiyaGapochkina01/ansible_02_04.git"
 pipeline {
   agent any
   parameters {
-    choice(name: "playbook", choises: ["preparation.yaml", "set-k8s-sysctl.yaml", "setup-app.yaml"])
+    choice(name: "playbook", choices: ["preparation.yaml", "set-k8s-sysctl.yaml", "setup-app.yaml"])
     string(name: "host", trim: true)
     gitParameter (name: 'branch', type: 'PT_BRANCH', quickFilterEnabled: true, defaultValue: 'main')
     booleanParam(name: "check", defaultValue: true)
