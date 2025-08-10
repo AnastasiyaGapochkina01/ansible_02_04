@@ -27,7 +27,7 @@ pipeline {
     }
     stage('Apply') {
       when {
-         expression { params.check == "false" }
+         not { expression { params.check } }
       }
       steps {
         sh """
