@@ -14,4 +14,4 @@ nginx_conf:
     server_name: metrics.app.local
     port: 82
 
-test_env: 123
+test_env: 1234
